@@ -1,0 +1,96 @@
+/* profile.css */
+
+/* Background Section */
+.background-sec {
+    position: relative;
+    background-image: url("../images/stats-bg.jpg");
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Background Overlay */
+.background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Semi-transparent black overlay */
+    z-index: 1;
+    /* Ensure the overlay is above the background image */
+}
+
+/* Profile Container */
+.profile-container {
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Semi-transparent white background for profile */
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    position: relative;
+    /* Ensure z-index works correctly */
+    z-index: 2;
+    /* Ensure profile container is above the overlay */
+    color: #333;
+    /* Text color */
+}
+
+.profile-container h2 {
+    margin-bottom: 20px;
+    color: navy;
+    /* Header color */
+}
+
+.profile-container p {
+    margin-bottom: 10px;
+}
+
+.profile-container .button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: navy;
+    /* Button background color */
+    color: #fff;
+    /* Button text color */
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile-container .button:hover {
+    background-color: #003366;
+    /* Button background color on hover */
+}
+
+.alert-container {
+    margin-bottom: 1rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    /* Success alert background color */
+    color: #155724;
+    /* Success alert text color */
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    /* Error alert background color */
+    color: #721c24;
+    /* Error alert text color */
+}

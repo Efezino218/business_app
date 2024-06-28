@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Businesses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <!-- Favicons -->
+    <link href="{{ url_for('static', filename='images/favicon.png') }}" rel="icon">
+    <link href="{{ url_for('static', filename='images/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+            <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <h1 class="sitename">Append</h1><span>.</span>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="{{ url_for('index') }}#hero" class="active">Home</a></li>
+                    <li><a href="{{ url_for('index') }}#about">About</a></li>
+
+                    <li class="dropdown"><a href="#"><span class="toggle-dropdown">Account </span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li class="dropdown"><a href="#"><span>Business Info</span> <i
+                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a href="{{ url_for('add_business') }}">Add Business</a></li>
+                                    <li><a href="{{ url_for('search_business') }}">Search Business</a></li>
+                                    <li><a href="{{ url_for('business') }}">All Businesses</a></li>
+                                    <li><a href="{{ url_for('my_businesses') }}">My Businesses</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+            <ul class="profile_setting">
+                {% if not business %}
+                <a href="{{ url_for('add_business') }}" class="btn btn-primary">Add New Business</a>
+                {% endif %}
+            </ul>
+
+
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+        <div class="background-overlay"></div>
+        <img src="{{ url_for('static', filename='images/blog/blog-recent-2.jpg') }}" alt="" data-aos="fade-in">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="form-container">
+                        <h2>My Businesses</h2>
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div class="alert-container">
+                            {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Shop Number</th>
+                                    <th>Business Name</th>
+                                    <th>Description</th>
+                                    <th>Image</th>
+                                    <th>Video</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for business in businesses %}
+                                <tr>
+                                    <td>{{ business[1] }}</td>
+                                    <td>{{ business[2] }}</td>
+                                    <td>{{ business[3] }}</td>
+                                    <td>
+                                        {% if business[5] %}
+                                        <img src="{{ url_for('static', filename='uploads/' ~ business[5]) }}"
+                                            alt="Business Image" style="max-width: 100px;">
+                                        {% else %}
+                                        No Image
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if business[4] %}
+                                        <video width="160" height="120" controls>
+                                            <source src="{{ url_for('static', filename='uploads/' ~ business[4]) }}"
+                                                type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        {% else %}
+                                        No Video
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <form action="" method="post" style="display:inline;">
+                                            <a class="btn btn-success"
+                                                href="{{ url_for('update_business', business_id=business[0]) }}">Update</a>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+    <script>
+        function confirmDelete(event) {
+            if (!confirm('Are you sure you want to delete this record?')) {
+                event.preventDefault();
+            }
+        }
+    </script>
+    <!-- Vendor JS Files -->
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/php-email-form/validate.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/aos/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/purecounter/purecounter_vanilla.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/imagesloaded/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+
+    <!-- Main JS File -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

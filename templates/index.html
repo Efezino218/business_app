@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index - Append Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{{url_for('static', filename='images/favicon.png')}}" rel="icon">
+  <link href="{{url_for('static', filename='images/apple-touch-icon.png')}}" rel="apple-touch-icon">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/aos/aos.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+  <link href="{{url_for('static', filename='vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Append
+  * Template URL: https://bootstrapmade.com/append-bootstrap-website-template/
+  * Updated: Jun 14 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+<style>
+  .container {
+    margin-bottom: 100px;
+    margin-top: 80px;
+  }
+
+  .card-title {
+    color: red;
+  }
+</style>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+      <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1 class="sitename">Append</h1><span>.</span>
+      </a>
+
+
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="{{ url_for('index') }}#hero" class="active">Home</a></li>
+          <li><a href="{{ url_for('index') }}#about">About</a></li>
+          <li class="dropdown"><a href="#"><span class="toggle-dropdown">Account </span> <i
+                class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li class="dropdown"><a href="#"><span>Business Info</span> <i
+                    class="bi bi-chevron-down toggle-dropdown"></i></a>
+                <ul>
+                  <li><a href="{{ url_for('add_business') }}">Add Business</a></li>
+                  <li><a href="{{ url_for('search_business') }}">Search Business</a></li>
+                  <li><a href="{{ url_for('business') }}">All Businesses</a></li>
+                  <li><a href="{{ url_for('my_businesses') }}">My Businesses</a></li>
+                </ul>
+              </li>
+              <li><a href="{{ url_for('profile') }}">Profile</a></li>
+              {% if session.get('user_id') %}
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+              {% else %}
+              <li style="display: flex;"><span><a href="{{ url_for('login') }}"
+                    style="padding: 18px 0px 18px 15px;">Login/</a></span>
+                <span><a href="{{ url_for('register') }}" style="padding: 18px 0px 18px 0px;">Register</a></span>
+              </li>
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      {% if not business %}
+      <a href="{{ url_for('add_business') }}" class="btn-getstarted">Add New Business</a>
+      {% endif %}
+
+
+    </div>
+  </header>
+
+
+  <!-- Hero Section -->
+  <section id="hero" class="hero section">
+
+    <img src="{{ url_for('static', filename='images/blog-3.jpg') }}" alt="" data-aos="fade-in">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10">
+          <h3 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website <span style="font-weight: bold;">{{
+              first_name }} {{
+              last_name }}</span></h3>
+        </div>
+        <div class="col-lg-5">
+          <div class="search-container">
+            <h2>Search Business</h2>
+            <form method="POST" action="{{ url_for('search_business') }}" class="search-form">
+              <input style="padding: 20px; width: 70%;" type="text" name="search_term"
+                placeholder="Enter shop number or business name" required>
+              <button style="padding: 20px;" type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="alert-container">
+              {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Display search results if available -->
+            {% if business %}
+            <div class="business-info">
+              <h3>Business Found</h3>
+              <p><strong>Shop Number:</strong> {{ business[1] }}</p>
+              <p><strong>Business Name:</strong> {{ business[2] }}</p>
+              <p><strong>Description:</strong> {{ business[3] }}</p>
+              {% if business[4] %}
+              <p><strong>Video URL:</strong><a href="{{ business[4] }}" target="_blank">View Video</a></p>
+              {% endif %}
+              <a href="{{ url_for('update_business', business_id=business[0]) }}" class="btn btn-secondary">Update
+                Business</a>
+            </div>
+            {% endif %}
+
+            <!-- If no business found, show option to add a new business -->
+            {# {% if not business %}
+            <p>No business found. You can add a new business.</p>
+            <a href="{{ url_for('add_business') }}" class="btn btn-primary">Add New Business</a>
+            {% endif %} #}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+  </section><!-- /Hero Section -->
+
+  <!-- Conditional Content based on Login Status -->
+
+
+  <div class="container">
+    <h1 style="color: #0a58ca; text-align: center; font-weight: bold;">Welcome To The Business Directory</h1><br>
+    <div class="row">
+      {% for business in businesses %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          {#<img src="{{ url_for('static', filename='uploads/' ~ business[5]) }}" class="card-img-top"
+            alt="Business Image"> #}
+          <div class="card-body">
+            <h5 class="card-title fw-bold">{{ business[2] }}</h5>
+            <p class="card-text">{{ business[3] }}</p>
+            {% if user_id == business[4] %}
+            <a href="{{ url_for('update_business', business_id=business[0]) }}" class="btn btn-primary">Update</a>
+            <a href="{{ url_for('view_business', business_id=business[0]) }}" class="btn btn-secondary">View</a>
+            {% else %}
+            <a href="{{ url_for('view_business', business_id=business[0]) }}" class="btn btn-secondary">View</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <section id="about" class="about section">
+
+    <div class="container" data-aos="fade-up" data-aos-delay="100">
+      <div class="row align-items-xl-center gy-5">
+
+        <div class="col-xl-5 content">
+          <h3>About Us</h3>
+          <h2>Ducimus rerum libero reprehenderit cumque</h2>
+          <p>Ipsa sint sit. Quis ducimus tempore dolores impedit et dolor cumque alias maxime. Enim reiciendis minus
+            et rerum hic non. Dicta quas cum quia maiores iure. Quidem nulla qui assumenda incidunt voluptatem tempora
+            deleniti soluta.</p>
+          <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+        </div>
+
+        <div class="col-xl-7">
+          <div class="row gy-4 icon-boxes">
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+              <div class="icon-box">
+                <i class="bi bi-buildings"></i>
+                <h3>Eius provident</h3>
+                <p>Magni repellendus vel ullam hic officia accusantium ipsa dolor omnis dolor voluptatem</p>
+              </div>
+            </div> <!-- End Icon Box -->
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
+              <div class="icon-box">
+                <i class="bi bi-clipboard-pulse"></i>
+                <h3>Rerum aperiam</h3>
+                <p>Autem saepe animi et aut aspernatur culpa facere. Rerum saepe rerum voluptates quia</p>
+              </div>
+            </div> <!-- End Icon Box -->
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
+              <div class="icon-box">
+                <i class="bi bi-command"></i>
+                <h3>Veniam omnis</h3>
+                <p>Omnis perferendis molestias culpa sed. Recusandae quas possimus. Quod consequatur corrupti</p>
+              </div>
+            </div> <!-- End Icon Box -->
+
+            <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
+              <div class="icon-box">
+                <i class="bi bi-graph-up-arrow"></i>
+                <h3>Delares sapiente</h3>
+                <p>Sint et dolor voluptas minus possimus nostrum. Reiciendis commodi eligendi omnis quideme lorenda
+                </p>
+              </div>
+            </div> <!-- End Icon Box -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section><!-- /About Section -->
+  <!-- Stats Section -->
+  <section id="stats" class="stats section">
+
+    <img src="{{ url_for('static', filename='images/stats-bg.jpg') }}" alt="" data-aos="fade-in">
+
+    <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
+
+      <div class="row gy-4">
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+              class="purecounter"></span>
+            <p>Clients</p>
+          </div>
+        </div><!-- End Stats Item -->
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+              class="purecounter"></span>
+            <p>Projects</p>
+          </div>
+        </div><!-- End Stats Item -->
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+              class="purecounter"></span>
+            <p>Hours Of Support</p>
+          </div>
+        </div><!-- End Stats Item -->
+
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-item text-center w-100 h-100">
+            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
+              class="purecounter"></span>
+            <p>Workers</p>
+          </div>
+        </div><!-- End Stats Item -->
+
+      </div>
+
+    </div>
+
+  </section><!-- /Stats Section -->
+
+  <footer id="footer" class="footer position-relative">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span class="sitename">Zino</span>
+          </a>
+          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta
+            donna mare fermentum iaculis eu non diam phasellus.</p>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="#">Web Design</a></li>
+            <li><a href="#">Web Development</a></li>
+            <li><a href="#">Product Management</a></li>
+            <li><a href="#">Marketing</a></li>
+            <li><a href="#">Graphic Design</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p>United States</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="sitename">Zino</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="https://bootstrapmade.com/">Efezino Richie</a>
+      </div>
+    </div>
+
+  </footer>
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/php-email-form/validate.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/aos/aos.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/glightbox/js/glightbox.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/purecounter/purecounter_vanilla.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+  <script src="{{url_for('static', filename='vendor/swiper/swiper-bundle.min.js')}}"></script>
+
+  <!-- Main JS File -->
+  <script src="{{url_for('static', filename='js/main.js')}}"></script>
+
+</body>
+
+</html>

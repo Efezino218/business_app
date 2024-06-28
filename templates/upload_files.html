@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - Append Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+</head>
+
+<body class="index-page">
+    <section>
+        <form method="POST">
+            <div class="form-group">
+                <label for="image">Image</label>
+                <input type="file" id="image_file" name="image" accept="image/*" required><br><br>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add image</button>
+        </form>
+    </section>
+
+    <h1>IMAGE DISPLAY</h1>
+    <div>
+        <div>{{ fetch_image }}</div>
+    </div>
+
+</body>
+
+</html>

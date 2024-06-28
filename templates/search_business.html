@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Business</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .search-container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    .search-container h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .search-form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .search-form input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .search-form .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a6268;
+    }
+
+    .alert-container {
+        margin-top: 20px;
+    }
+
+    .alert {
+        padding: 10px 20px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+
+    .business-info {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .business-info h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .business-info p {
+        margin: 5px 0;
+    }
+
+    .business-info a {
+        display: inline-block;
+        margin-top: 10px;
+        text-decoration: none;
+        color: #007bff;
+    }
+
+    .business-info a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="search-container">
+            <h2>Search Business</h2>
+            <form method="POST" class="search-form">
+                <input type="text" name="search_term" placeholder="Enter shop number or business name" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="alert-container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Display search results if available -->
+            {% if business %}
+            <div class="business-info">
+                <h3>Business Found</h3>
+                <p><strong>Shop Number:</strong> {{ business[1] }}</p>
+                <p><strong>Business Name:</strong> {{ business[2] }}</p>
+                <p><strong>Description:</strong> {{ business[3] }}</p>
+                {% if business[4] %}
+                <p><strong>Video URL:</strong> <a href="{{ business[4] }}" target="_blank">View Video</a></p>
+                {% endif %}
+                <a href="{{ url_for('update_business', business_id=business[0]) }}" class="btn btn-secondary">Update
+                    Business</a>
+            </div>
+            {% endif %}
+
+            <!-- If no business found, show option to add a new business -->
+            {% if not business %}
+            <p>No business found. You can add a new business.</p>
+            <a href="{{ url_for('add_business') }}" class="btn btn-primary">Add New Business</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

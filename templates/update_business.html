@@ -1,0 +1,136 @@
+<!-- update_business.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - Append Bootstrap Template</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{{url_for('static', filename='images/favicon.png')}}" rel="icon">
+    <link href="{{url_for('static', filename='images/apple-touch-icon.png')}}" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/aos/aos.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: Append
+  * Template URL: https://bootstrapmade.com/append-bootstrap-website-template/
+  * Updated: Jun 14 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <header id="header" class="header d-flex align-items-center fixed-top"
+        style="border-bottom: 2px solid rgb(233, 233, 233);">
+        <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+            <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <!-- <img src="assets/img/logo.png" alt=""> -->
+                <h1 class="sitename">Append</h1><span>.</span>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="{{ url_for('index') }}#hero" class="active">Home</a></li>
+                    <li><a href="{{ url_for('index') }}#about">About</a></li>
+                    <li class="dropdown"><a href="#"><span class="toggle-dropdown">Account </span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li class="dropdown"><a href="#"><span>Business Info</span> <i
+                                        class="bi bi-chevron-down toggle-dropdown"></i></a>
+                                <ul>
+                                    <li><a href="{{ url_for('add_business') }}">Add Business</a></li>
+                                    <li><a href="{{ url_for('search_business') }}">Search Business</a></li>
+                                    <li><a href="{{ url_for('business') }}">All Businesses</a></li>
+                                    <li><a href="{{ url_for('my_businesses') }}">My Businesses</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+            <ul class="profile_setting">
+                {% if not business %}
+                <a href="{{ url_for('add_business') }}" class="btn btn-primary">Add New Business</a>
+                {% endif %}
+            </ul>
+
+
+        </div>
+    </header>
+
+    <div style="margin-bottom: 200px;"></div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card" style="background-color: #0a58ca;">
+                    <div class="card-header">
+                        <h2 style="color: white;">Update Business</h2>
+                    </div>
+                    <div class="card-body" style="color: white;">
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="shop_no">Shop Number</label>
+                                <input type="text" class="form-control" id="shop_no" name="shop_no"
+                                    value="{{ business[1] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="bus_name">Business Name</label>
+                                <input type="text" class="form-control" id="bus_name" name="bus_name"
+                                    value="{{ business[2] }}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" name="description" rows="4"
+                                    required>{{ business[3] }}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="image_file">Business Image</label>
+                                <input type="file" class="form-control-file" id="image_file" name="image_file">
+                            </div>
+                            <div class="form-group">
+                                <label for="video_file">Business Video</label>
+                                <input type="file" class="form-control-file" id="video_file" name="video_file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Business</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
