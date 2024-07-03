@@ -1,0 +1,45 @@
+<!-- my_subscriptions.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Subscriptions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>My Subscriptions</h1>
+        {% if subscriptions %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Business Name</th>
+                    <th>Subscription Type</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Amount Paid</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscription in subscriptions %}
+                <tr>
+                    <td>{{ subscription[1] }}</td>
+                    <td>{{ subscription[2] }}</td>
+                    <td>{{ subscription[3].strftime('%Y-%m-%d') }}</td>
+                    <td>{{ subscription[4].strftime('%Y-%m-%d') }}</td>
+                    <td>{{ subscription[5] }}</td>
+                    <td>${{ subscription[6] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>You have no active subscriptions.</p>
+        {% endif %}
+    </div>
+</body>
+
+</html>

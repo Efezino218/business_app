@@ -2912,3 +2912,69 @@ section,
 .dropdown_profile:hover .dropdown-menu-profile {
   display: block;
 }
+
+/* Business Card  */
+.card-body a {
+  font-size: 12px;
+}
+
+/* Business Card END  */
+
+
+/* Alert Message */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.alert-success {
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+}
+
+.alert-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+/* Alert Message END */
+
+/* =========================== 
+      Pagination 
+ ========================== */
+.pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-link {
+  padding: 10px 20px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-decoration: none;
+  color: #333;
+}
+
+.page-link:hover {
+  background-color: #ddd;
+}
+
+.active .page-link {
+  background-color: #007bff;
+  color: white;
+}
+
+.disabled .page-link {
+  background-color: #e9ecef;
+  color: #6c757d;
+  pointer-events: none;
+}

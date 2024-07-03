@@ -1,0 +1,57 @@
+<!-- subscribe.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Subscribe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<style>
+    .alert {
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+
+    .alert-error {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>Subscribe to {{ business_id }}</h1>
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div>
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" action="{{ url_for('subscribe', business_id=business_id) }}">
+            <div class="mb-3">
+                <label for="subscription_type" class="form-label">Subscription Type</label>
+                <select id="subscription_type" name="subscription_type" class="form-select" required>
+                    <option value="monthly">Monthly - $50</option>
+                    <option value="yearly">Yearly - $600</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+    </div>
+</body>
+
+</html>

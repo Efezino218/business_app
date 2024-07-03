@@ -27,6 +27,15 @@
             <p><strong>First Name:</strong> {{ user[0] }}</p>
             <p><strong>Last Name:</strong> {{ user[1] }}</p>
             <p><strong>Email:</strong> {{ user[2] }}</p>
+            {% if subscription %}
+            <h3>Subscription Details</h3>
+            <p><strong>Start Date:</strong> {{ subscription['start_date'] }}</p>
+            <p><strong>End Date:</strong> {{ subscription['end_date'] }}</p>
+            <p><strong>Subscription Type:</strong> {{ subscription['subscription_type'] }}</p>
+            {% else %}
+            <p>You are not subscribed to any plans.</p>
+            {% endif %}
+
             <a href="{{ url_for('edit_profile') }}" class="button">Edit Profile</a>
         </div>
     </section>

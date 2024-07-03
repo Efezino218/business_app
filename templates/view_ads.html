@@ -1,0 +1,18 @@
+<!-- view_ads.html -->
+<ul>
+    {% for ad in ads %}
+        <li>
+            <h2>{{ ad[2] }}</h2>
+            <p>{{ ad[3] }}</p>
+            {% if ad[4] %}
+                <img src="{{ ad[4] }}" alt="{{ ad[2] }}" style="max-width: 100%;">
+            {% endif %}
+            {% if ad[5] %}
+                <video controls>
+                    <source src="{{ ad[5] }}" type="video/mp4">
+                </video>
+            {% endif %}
+            <p>Dimensions: {{ ad[6] }}</p>
+        </li>
+    {% endfor %}
+</ul>

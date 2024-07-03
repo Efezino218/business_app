@@ -7,6 +7,8 @@ from connect import get_db_connection
 from werkzeug.utils import secure_filename
 import re, os
 from functools import wraps
+from datetime import date, datetime, timedelta
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -366,21 +368,221 @@ def delete_business(business_id):
     return redirect(url_for('business'))
 
     
+# Advertisement Routes
+from datetime import timedelta  # Make sure to import timedelta
+# Function to handle the subscription payment
+def create_subscription(user_id, business_id, subscription_type):
+    start_date = datetime.now().date()
+    if subscription_type == 'monthly':
+        end_date = start_date + timedelta(days=30)
+    elif subscription_type == 'yearly':
+        end_date = start_date + timedelta(days=365)
+    amount_paid = 50.0
+    status = 'active'
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute('INSERT INTO subscriptions (user_id, business_id, subscription_type, start_date, end_date, status, amount_paid) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                (user_id, business_id, subscription_type, start_date, end_date, status, amount_paid))
+    cur.execute('UPDATE businesses SET subscription_active = TRUE WHERE id = %s', (business_id,))
+    conn.commit()
+    cur.close()
+    conn.close()
+    
+    
+@app.route('/subscribe/<int:business_id>', methods=['GET', 'POST'])
+@login_required
+def subscribe(business_id):
+    user_id = session['user_id']
+    
+    # Check if the user is the owner of the business
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("SELECT user_id FROM businesses WHERE id = %s", (business_id,))
+    business_owner = cur.fetchone()
+    
+    if not business_owner or business_owner[0] != user_id:
+        flash('You can only subscribe for your own business.', 'error')
+        cur.close()
+        conn.close()
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST':
+        subscription_type = request.form['subscription_type']
+        
+        # Check if the user already has an active subscription for the same business
+        cur.execute("""
+            SELECT * FROM subscriptions 
+            WHERE user_id = %s AND business_id = %s AND status = 'active'
+        """, (user_id, business_id))
+        existing_subscription = cur.fetchone()
+        
+        if existing_subscription:
+            flash('You already have an active subscription for this business.', 'error')
+            cur.close()
+            conn.close()
+            return redirect(url_for('subscribe', business_id=business_id))
+        
+        # Handle payment process (skipped here for simplicity)
+        
+        # Create the subscription
+        create_subscription(user_id, business_id, subscription_type)
+        flash('Subscription successful.', 'success')
+        cur.close()
+        conn.close()
+        return redirect(url_for('index'))
+    
+    cur.close()
+    conn.close()
+    return render_template('subscribe.html', business_id=business_id)
+   
+# @app.route('/subscribe/<int:business_id>', methods=['GET', 'POST'])
+# @login_required
+# def subscribe(business_id):
+#     user_id = session['user_id']
+    
+#     if request.method == 'POST':
+#         subscription_type = request.form['subscription_type']
+        
+#         # Check if there's already an active subscription for the business and user
+#         conn = get_db_connection()
+#         cur = conn.cursor()
+        
+#         cur.execute('''
+#             SELECT * FROM subscriptions 
+#             WHERE user_id = %s AND business_id = %s AND status = 'active'
+#         ''', (user_id, business_id))
+        
+#         existing_subscription = cur.fetchone()
+        
+#         if existing_subscription:
+#             flash('You already have an active subscription for this business.', 'error')
+#             cur.close()
+#             conn.close()
+#             return redirect(url_for('subscribe', business_id=business_id))
+        
+#         # Calculate start and end dates based on subscription type
+#         start_date = datetime.now()
+#         if subscription_type == 'monthly':
+#             end_date = start_date + timedelta(days=30)
+#         elif subscription_type == 'yearly':
+#             end_date = start_date + timedelta(days=365)
+#         else:
+#             flash('Invalid subscription type.', 'error')
+#             cur.close()
+#             conn.close()
+#             return redirect(url_for('subscribe', business_id=business_id))
+        
+#         # Insert new subscription into database
+#         cur.execute('''
+#             INSERT INTO subscriptions (user_id, business_id, subscription_type, start_date, end_date, status, amount_paid) 
+#             VALUES (%s, %s, %s, %s, %s, %s, %s)
+#         ''', (user_id, business_id, subscription_type, start_date, end_date, 'active', 50.00))
+        
+#         # Update business subscription status
+#         cur.execute('''
+#             UPDATE businesses SET subscription_active = TRUE WHERE id = %s
+#         ''', (business_id,))
+        
+#         conn.commit()
+#         cur.close()
+#         conn.close()
+        
+#         flash('Subscription successful.', 'success')
+#         return redirect(url_for('index'))
+    
+#     return render_template('subscribe.html', business_id=business_id)
+
+
+# @app.route('/subscribe/<int:business_id>', methods=['GET', 'POST'])
+# @login_required
+# def subscribe(business_id):
+#     user_id = session['user_id']
+#     if request.method == 'POST':
+#         subscription_type = request.form['subscription_type']
+#         # Handle payment process (skipped here for simplicity)
+#         create_subscription(user_id, business_id, subscription_type)
+#         flash('Subscription successful.', 'success')
+#         return redirect(url_for('index'))
+    
+#     return render_template('subscribe.html', business_id=business_id)
+
+@app.route('/my_subscriptions')
+@login_required
+def my_subscriptions():
+    user_id = session['user_id']
+    conn = get_db_connection()
+    cur = conn.cursor()
+    
+    cur.execute('''
+        SELECT s.id, b.bus_name, s.subscription_type, s.start_date, s.end_date, s.status, s.amount_paid
+        FROM subscriptions s
+        JOIN businesses b ON s.business_id = b.id
+        WHERE s.user_id = %s AND s.status = 'active'
+    ''', (user_id,)) 
+    
+    """UNDERSTAND How the querry is being made from the database below:
+    s.id: The id column from the subscriptions table.
+    b.bus_name: The bus_name column from the businesses table.
+    s.subscription_type, s.start_date, s.end_date, s.status, s.amount_paid: Columns from the subscriptions table.
+    NOTE: s is an alias for the subscriptions table. Example: s.id refers to the id column in the subscriptions table. 
+            b is an alias for the businesses table. Example: b.bus_name refers to the bus_name column in the businesses table.
+
+    """    
+    subscriptions = cur.fetchall()
+    
+    cur.close()
+    conn.close()
+    
+    return render_template('my_subscriptions.html', subscriptions=subscriptions)
+
 
 @app.route('/')
 def index():
     user_id = session.get('user_id')
     first_name = session.get('first_name')
     last_name = session.get('last_name')
-    
+    page = request.args.get('page', 1, type=int)
+    per_page = 10  # Number of businesses to display per page
+    offset = (page - 1) * per_page
+
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute("SELECT id, shop_no, bus_name, description, user_id FROM businesses")
+    cur.execute("""
+        SELECT id, shop_no, bus_name, description, user_id, subscription_active
+        FROM businesses
+        ORDER BY subscription_active DESC, id
+        LIMIT %s OFFSET %s
+    """, (per_page, offset))
     businesses = cur.fetchall()
+
+    cur.execute("SELECT COUNT(*) FROM businesses")
+    total_businesses = cur.fetchone()[0]
+
     cur.close()
     conn.close()
+
+    total_pages = (total_businesses + per_page - 1) // per_page  # Calculate total number of pages
+
+    return render_template('index.html', user_id=user_id, first_name=first_name, last_name=last_name, businesses=businesses, page=page, total_pages=total_pages)
+
+
+
+
+# @app.route('/')
+# def index():
+#     user_id = session.get('user_id')
+#     first_name = session.get('first_name')
+#     last_name = session.get('last_name')
     
-    return render_template('index.html', user_id=user_id, first_name=first_name, last_name=last_name, businesses=businesses)
+#     conn = get_db_connection()
+#     cur = conn.cursor()
+#     cur.execute("SELECT id, shop_no, bus_name, description, user_id FROM businesses")
+#     businesses = cur.fetchall()
+#     cur.close()
+#     conn.close()
+    
+#     return render_template('index.html', user_id=user_id, first_name=first_name, last_name=last_name, businesses=businesses)
 
 
 @app.route('/logout')
