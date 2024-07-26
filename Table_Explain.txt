@@ -1,0 +1,139 @@
+============>CREATE THE BUSINESS TABLE SQL COMMAND AND HOW IT WORK<====================
+
+CREATE TABLE businesses (
+    id SERIAL PRIMARY KEY,
+    shop_no VARCHAR(20) NOT NULL,
+    bus_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    video_url VARCHAR(255),
+    user_id INTEGER REFERENCES users(id)
+);
+
+
+OR U can also do the following below
+
+CREATE TABLE businesses (
+    id SERIAL PRIMARY KEY,
+    shop_no VARCHAR(20) NOT NULL,
+    bus_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    video_url VARCHAR(255),
+    user_id NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+Explanation On how the table colum WORK:
+id: Auto-generated unique identifier for each business.
+shop_no: Shop number of the business (must be provided by the user).
+bus_name: Name of the business (must be provided by the user).
+description: Description of the business (optional).
+user_id: Identifier linking the business to a user (retrieved from the session).
+FOREIGN KEY (user_id) REFERENCES users(id): Ensures that user_id corresponds to a valid id in the users table.
+
+
+
+Summary
+SQL Standard: The syntax FOREIGN KEY (put the column_name of current table like our table example above the column is user_id) 
+REFERENCES other_table, that is the table that you are linking it or referenced to, Our example above is (users) is the refrernced table
+(column_name, our example above id is the column that we are refrerncing from users table) is a standard.
+SQL command used to define foreign key constraints. Not User-Defined: This command is not user-defined; it is a built-in 
+part of the SQL language used to maintain referential integrity between tables. Purpose: Ensures that values in the foreign 
+key column (user_id) correspond to valid entries in the referenced column (id) of the referenced table (users).
+
+SO NOTE: if a particular user in the database has an id of 39, Example Name of the user is 'Zino', and the unique id is 39: when the 
+user add business or add multiples business all the businesses is going to have the unique id from from the user name 'Zino' 
+which id is 39. and is going to be display on the businesses table under user_id column because that is tha column that we are referenced.
+That is just the login behind the codin, is not hard.
+
+
+
+EMAMPLES BELOW HOW THE DATABASE LOOKS SCROLL DOWN AND READ CAREFULLY:
+
+
+find_business_db=# SELECT * FROM users;
+ id | first_name | last_name |            email            |                                                password
+----+------------+-----------+-----------------------------+--------------------------------------------------------------------------------------------------------
+  3 | Efezino    | Engineer  | testing@gmail.com           | pbkdf2:sha256:600000$lxoKMVL6dJ7oB9wN$758edb257932a25c136e3d0390ccddbb5d425640c6455536be9a5ecf44788ade
+ 11 | Cyjust     | Engineer  | cyjustwebsolution@gmail.com | pbkdf2:sha256:600000$YsDf1q9LH7IOAuaq$2b6e4795838f9f881e1c35b7f9bf1b78ece7ab173dc00b923bbee6f3a853a3e0
+ 39 | American   | Engineer  | info-abroad@rprotravels.com | pbkdf2:sha256:600000$fyYEQvwVayyPxQjQ$b48cb13d9ec3ead93d96a7b6c2136ab477c5a2e45749c813979d88c5e490b3ff
+  1 | AMERICAN   | BOY       | admin@gmail.com             | pbkdf2:sha256:600000$Nu5JszZW3BrPSMc7$030cc21c8c7d886e44a4b80d401620438e6522d1dbad7a1ce274e9f6d07c5368
+ 37 | Efezino    | Richie    | support@rprotravels.com     | pbkdf2:sha256:600000$oM2zVOG0UaBH2RvS$8403cbd42be89165cbf9669f483fe20ea61136182f92013e3d12b1396804f838
+ 40 | Efezino    | Ubiomor   | ubiomor@gmail.com           | pbkdf2:sha256:600000$uZxVhv4pDTC9Qz2b$0c2767682fc9ecb8c63bd703f20c8a42aa2399a3c079ba75f4c1fd5a376fcfca
+(6 rows)
+
+
+find_business_db=# SELECT * FROM businesses;
+ id | shop_no |       bus_name        |        description         | video_url | user_id | image_url | subscription_active
+----+---------+-----------------------+----------------------------+-----------+---------+-----------+---------------------
+  4 | 5       | MY BUSINESS           | i LOVE Jesus               |           |       3 |           | f
+ 13 | 455     | TECHNOLOGY            | i LOVE Programming         |           |      39 |           | f
+  2 | 2       | Tech School 1         | coding is very sweet       |           |       3 |           | f
+ 14 | 44      | MY BUSINESS           | i am testing               |           |      39 |           | f
+ 17 | 70      | PROGRMMING AND CODING | A good Technology School   |           |      40 |           | f
+ 20 | 67      | EFEZINO BUSINESS      | my business                |           |      40 |           | f
+ 16 | 67      | HALELLUYAH            | IT is time for programming |           |      40 |           | f
+ 21 | 20      | Michael Logo          | working on image           |           |      39 |           | f
+ 23 | 23      | NIGA                  | coding is sweet            |           |      39 |           | t
+ 22 | 21      | Still Log0            | on the pending...          |           |      39 |           | t
+ 15 | 77      | Justification         | i am a good coder          |           |      39 |           | t
+ 19 | 222     | ANOTHER               | another testing            |           |      40 |           | t
+ 18 | 15      | TESTING               | testing theapp             |           |      40 |           | t
+ 24 | 10      | BLOOM                 | blooming is a new one      |           |      39 |           | f
+ 12 | 22      | Dunis                 | I love coding advanced     |           |      39 |           | f
+
+
+You can see in the users table we have a user name 'American' and the id is '39', now on the businesses you can see multiples
+'39' on the user_id column. that is because the user "American" is the one that added all the businesses, tha is y the businesses has
+ '39' under the user_id column: Note the user_id column is the referenced to the users table in other to connect to the user id. 
+
+
+
+okay is working now, i want to make it more complex and good gor user experince
+
+    {% if business[5] %}
+          <span class="subscribed-badge">Subscribed</span>
+          <form action="{{ url_for('unsubscribe', business_id=business[0]) }}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+          </form>
+          {% endif %}
+i dont want to have subscribe and unsubecribe button different
+
+i want if a user click o subscribe, let the same button change to unsubscribe, i want jut one button to be trigger and give me the same functionality
+
+
+
+
+
+
+
+
+
+
+
+
+               {% if businesses %}
+
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Shop Number:</th>
+                                        <th>Business Name:</th>
+                                        <th>Description:</th>
+                                        <th>Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for show_business in business %}
+                                    <tr>
+                                        <td>{{ show_business[0] }}</td>
+                                        <td>{{ show_business[1] }}</td>
+                                        <td>{{ show_business[2] }}</td>
+                                        <td><img src="{{ business[5]}}" alt="Business Image" style="max-width: 100px;">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+                                </tbody>
+                            </table>
+                            {% endif %}

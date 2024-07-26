@@ -1,0 +1,28 @@
+<!-- admin_update_business.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Business</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Update Business</h1>
+        <form method="post">
+            <div class="form-group">
+                <label for="bus_name">Business Name:</label>
+                <input type="text" name="bus_name" class="form-control" value="{{ business[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea name="description" class="form-control" required>{{ business[3] }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+</body>
+
+</html>

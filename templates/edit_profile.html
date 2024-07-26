@@ -109,7 +109,7 @@
         {% endif %}
         {% endwith %}
         <h2>Edit Profile</h2>
-        <form method="POST" class="edit-profile-form">
+        <form method="POST" class="edit-profile-form" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="first_name">First Name</label>
                 <input type="text" id="first_name" name="first_name" value="{{ user[0] }}" required>
@@ -121,6 +121,10 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="{{ user[2] }}" required>
+            </div>
+            <div class="form-group">
+                <label for="image_file">Business Image</label>
+                <input type="file" class="form-control-file" id="image_file" name="file" accept="image/*" required>
             </div>
             <div class="form-group">
                 <label for="password">New Password (leave blank to keep current password)</label>

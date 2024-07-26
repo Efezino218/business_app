@@ -6,6 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search Business</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Index - Efe</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{{url_for('static', filename='images/favicon.png')}}" rel="icon">
+    <link href="{{url_for('static', filename='images/apple-touch-icon.png')}}" rel="apple-touch-icon">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{{url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/aos/aos.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{{url_for('static', filename='css/main.css')}}" rel="stylesheet">
 </head>
 <style>
     body {
@@ -133,40 +158,81 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <div class="alert-container">
-                {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            {% endwith %}
 
-            <!-- Display search results if available -->
-            {% if business %}
-            <div class="business-info">
-                <h3>Business Found</h3>
-                <p><strong>Shop Number:</strong> {{ business[1] }}</p>
-                <p><strong>Business Name:</strong> {{ business[2] }}</p>
-                <p><strong>Description:</strong> {{ business[3] }}</p>
-                {% if business[4] %}
-                <p><strong>Video URL:</strong> <a href="{{ business[4] }}" target="_blank">View Video</a></p>
-                {% endif %}
-                <a href="{{ url_for('update_business', business_id=business[0]) }}" class="btn btn-secondary">Update
-                    Business</a>
-            </div>
-            {% endif %}
+            {#<table border="1">
+                <thead>
+                    <tr>
+                        <th>Shop Number</th>
+                        <th>Business Name</th>
+                        <th>Description</th>
+                        <th>Image</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for businesses in business %}
+                    <tr>
+                        <td>{{ businesses[1] }}</td>
+                        <td>{{ businesses[2] }}</td>
+                        <td>{{ businesses[3] }}</td>
+                        <td><img src="{{ businesses[5]}}" alt="businesses Image" style="max-width: 100px;">
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>#}
 
             <!-- If no business found, show option to add a new business -->
             {% if not business %}
             <p>No business found. You can add a new business.</p>
             <a href="{{ url_for('add_business') }}" class="btn btn-primary">Add New Business</a>
+            <a href="{{ url_for('index') }}" class="btn btn-danger">Go Back to Home</a>
             {% endif %}
         </div>
     </div>
+
+
+
+
+
+
+
+    <!-- Business Directory Section -->
+    <h1 style="color: #0a58ca; text-align: center; font-weight: bold;">Welcome To The Business Directory</h1><br>
+    <div class="row">
+        {% for business in businesses %}
+        <div class="col-md-4 mb-4">
+            <div class="card" style="position: relative;">
+                {#<img src="{{ url_for('static', filename='uploads/' ~ business[5]) }}" class="card-img-top"
+                    alt="Business Image"> #}
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ business[2] }}</h5>
+                    <p class="card-text">{{ business[3] }}</p>
+                    {% if business[5] %}
+                    <span class="subscribed-label">Subscribed</span>
+                    {% endif %}
+                    {% if user_id == business[4] %}
+                    <a href="{{ url_for('update_business', business_id=business[0]) }}"
+                        class="btn btn-primary">Update</a>
+                    {% if business[5] %}
+                    <form action="{{ url_for('unsubscribe', business_id=business[0]) }}" method="post"
+                        style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+                    </form>
+                    {% else %}
+                    <a href="{{ url_for('subscribe', business_id=business[0]) }}"
+                        class="btn btn-warning btn-sm">Subscribe</a>
+                    {% endif %}
+                    {% endif %}
+                    <a href="{{ url_for('view_business', business_id=business[0]) }}" class="btn btn-secondary">View</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
 </body>
 
 </html>

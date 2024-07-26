@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Index - Append Bootstrap Template</title>
+    <title>Index - Efe</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
             <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
-                <h1 class="sitename">Append</h1><span>.</span>
+                <h1 class="sitename">Efe Zino</h1><span>.</span>
             </a>
 
             <nav id="navmenu" class="navmenu">
@@ -88,16 +88,18 @@
 
         <section id="hero" class="hero section">
             <div class="background-overlay"></div>
-            <img src="{{ url_for('static', filename='images/blog/blog-6.jpg') }}" alt="" data-aos="fade-in">
+            <img class="bg" src="{{ url_for('static', filename='images/blog/blog-6.jpg') }}" alt="" data-aos="fade-in">
 
             <div class="container">
                 <div class="row">
                     <div class="col-lg-10">
                         <div class="form-container">
                             <h2>Business Details</h2>
+
                             <table class="table table-striped">
                                 <tbody>
                                     <tr>
+
                                         <th>Shop Number:</th>
                                         <td>{{ business[0] }}</td>
                                     </tr>
@@ -109,6 +111,36 @@
                                         <th>Description:</th>
                                         <td>{{ business[2] }}</td>
                                     </tr>
+                                    <tr>
+                                        <th>Image:</th>
+                                        <td><img src="../{{ business[3]}}" alt="Business Image"
+                                                style="max-width: 100px;">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+                            <table border="1">
+                                <thead>
+                                    <tr>
+                                        <th>Shop Number:</th>
+                                        <th>Business Name:</th>
+                                        <th>Description:</th>
+                                        <th>Image</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for show_business in business %}
+                                    <tr>
+                                        <td>{{ show_business[0] }}</td>
+                                        <td>{{ show_business[1] }}</td>
+                                        <td>{{ show_business[2] }}</td>
+                                        <td><img src="{{ business[5]}}" alt="Business Image" style="max-width: 100px;">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
                                 </tbody>
                             </table>
                             <a href="{{ url_for('business') }}" class="btn btn-secondary">Back to Businesses</a>

@@ -23,7 +23,9 @@
             </div>
             {% endif %}
             {% endwith %}
+            <img src="{{ user[3]}}" alt="Business Image" style="max-width: 90px; width: 100%; height: 13vh;">
             <h2>User Profile</h2>
+            {{ user[2]}}
             <p><strong>First Name:</strong> {{ user[0] }}</p>
             <p><strong>Last Name:</strong> {{ user[1] }}</p>
             <p><strong>Email:</strong> {{ user[2] }}</p>

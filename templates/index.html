@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - Append Bootstrap Template</title>
+  <title>Index - Efe</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -68,28 +68,28 @@
       <a href="{{ url_for('index') }}" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="assets/img/logo.png" alt=""> -->
-        <h1 class="sitename">Append</h1><span>.</span>
+        <h1 class="sitename">Efe Zino</h1><span>.</span>
       </a>
 
 
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="{{ url_for('index') }}#hero" class="active">Home</a></li>
-          <li><a href="{{ url_for('index') }}#about">About</a></li>
+          <li><a href="{{ url_for('index') }}" class="active">Home</a></li>
+          <li><a href="#about">About</a></li>
           <a href="{{ url_for('my_subscriptions') }}">My Subscriptions</a>
-          <li class="dropdown"><a href="#"><span class="toggle-dropdown">Account </span> <i
-                class="bi bi-chevron-down toggle-dropdown"></i></a>
+          <li class="dropdown"><a href="#"><span class="toggle-dropdown">Business Info
+              </span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
-              <li class="dropdown"><a href="#"><span>Business Info</span> <i
-                    class="bi bi-chevron-down toggle-dropdown"></i></a>
-                <ul>
-                  <li><a href="{{ url_for('add_business') }}">Add Business</a></li>
-                  <li><a href="{{ url_for('search_business') }}">Search Business</a></li>
-                  <li><a href="{{ url_for('business') }}">All Businesses</a></li>
-                  <li><a href="{{ url_for('my_businesses') }}">My Businesses</a></li>
-                </ul>
-              </li>
+              <li><a href="{{ url_for('add_business') }}">Add Business</a></li>
+              <li><a href="{{ url_for('search_business') }}">Search Business</a></li>
+              <li><a href="{{ url_for('business') }}">All Businesses</a></li>
+              <li><a href="{{ url_for('my_businesses') }}">My Businesses</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"> <a href="{{ url_for('profile') }}">Profile &nbsp; <img src="{{ users_image }}"
+                alt="Business Image" style="max-width: 70px; width: 100%; height: 4vh; border-radius: 50%;"></a>
+            <ul>
               <li><a href="{{ url_for('profile') }}">Profile</a></li>
               {% if session.get('user_id') %}
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
@@ -116,7 +116,7 @@
   <!-- Hero Section -->
   <section id="hero" class="hero section">
 
-    <img src="{{ url_for('static', filename='images/blog-3.jpg') }}" alt="" data-aos="fade-in">
+    <img class="bg" src="{{ url_for('static', filename='images/blog-3.jpg') }}" alt="" data-aos="fade-in">
     <div class="container">
       <!-- Flash messages -->
       {% with messages = get_flashed_messages(with_categories=true) %}
@@ -186,10 +186,9 @@
     <div class="row">
       {% for business in businesses %}
       <div class="col-md-4 mb-4">
-        <div class="card">
-          {#<img src="{{ url_for('static', filename='uploads/' ~ business[5]) }}" class="card-img-top"
-            alt="Business Image"> #}
-          {% if business[5] %}
+        <div class="card" style="position: relative; align-items: center;">
+          <img src="{{ business[5] }}" alt="Business Image" style="max-width: 100px;">
+          {% if business[6] %}
           <span class="subscribed-badge">Subscribed</span>
           {% endif %}
           <div class="card-body">
@@ -198,38 +197,46 @@
             {% if user_id == business[4] %}
             <a href="{{ url_for('update_business', business_id=business[0]) }}" class="btn btn-primary">Update</a>
             <a href="{{ url_for('view_business', business_id=business[0]) }}" class="btn btn-secondary">View</a>
+            {% if business[6] %}
+            <form action="{{ url_for('unsubscribe', business_id=business[0]) }}" method="post" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm">Unsubscribe</button>
+            </form>
+            {% else %}
             <a href="{{ url_for('subscribe', business_id=business[0]) }}" class="btn btn-warning btn-sm">Subscribe</a>
+            {% endif %}
             {% else %}
             <a href="{{ url_for('view_business', business_id=business[0]) }}" class="btn btn-secondary">View</a>
-            <a href="{{ url_for('subscribe', business_id=business[0]) }}" class="btn btn-warning btn-sm">Subscribe</a>
             {% endif %}
           </div>
         </div>
       </div>
       {% endfor %}
-      <!-- Pagination Controls -->
-      <div class="pagination">
-        {% if page > 1 %}
-        <a href="{{ url_for('index', page=page-1) }}" class="page-link">Previous</a>
-        {% else %}
-        <span class="page-link disabled">Previous</span>
-        {% endif %}
+    </div>
+    <!-- Pagination Controls -->
+    <div class="pagination">
+      {% if page > 1 %}
+      <a href="{{ url_for('index', page=page-1) }}" class="page-link">Previous</a>
+      {% else %}
+      <span class="page-link disabled">Previous</span>
+      {% endif %}
 
-        {% for p in range(1, total_pages + 1) %}
-        {% if p == page %}
-        <span class="page-link active">{{ p }}</span>
-        {% else %}
-        <a href="{{ url_for('index', page=p) }}" class="page-link">{{ p }}</a>
-        {% endif %}
-        {% endfor %}
+      {% for p in range(1, total_pages + 1) %}
+      {% if p == page %}
+      <span class="page-link active">{{ p }}</span>
+      {% else %}
+      <a href="{{ url_for('index', page=p) }}" class="page-link">{{ p }}</a>
+      {% endif %}
+      {% endfor %}
 
-        {% if page < total_pages %} <a href="{{ url_for('index', page=page+1) }}" class="page-link">Next</a>
-          {% else %}
-          <span class="page-link disabled">Next</span>
-          {% endif %}
-      </div>
+      {% if page < total_pages %} <a href="{{ url_for('index', page=page+1) }}" class="page-link">Next</a>
+        {% else %}
+        <span class="page-link disabled">Next</span>
+        {% endif %}
     </div>
   </div>
+
+
+
 
   <!-- About Section -->
   <section id="about" class="about section">
@@ -239,10 +246,9 @@
 
         <div class="col-xl-5 content">
           <h3>About Us</h3>
-          <h2>Ducimus rerum libero reprehenderit cumque</h2>
-          <p>Ipsa sint sit. Quis ducimus tempore dolores impedit et dolor cumque alias maxime. Enim reiciendis minus
-            et rerum hic non. Dicta quas cum quia maiores iure. Quidem nulla qui assumenda incidunt voluptatem tempora
-            deleniti soluta.</p>
+          <h2>Connecting Businesses and Customers</h2>
+          <p>Our mission is to create a seamless platform where businesses can showcase their offerings and customers
+            can easily find what they need.</p>
           <a href="#" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
         </div>
 
@@ -252,32 +258,40 @@
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
               <div class="icon-box">
                 <i class="bi bi-buildings"></i>
-                <h3>Eius provident</h3>
-                <p>Magni repellendus vel ullam hic officia accusantium ipsa dolor omnis dolor voluptatem</p>
+                <h3>Why Choose Us?</h3>
+                <p><strong>The Best Directory for Your Business Needs</strong>
+                  We provide a comprehensive and user-friendly directory that helps businesses increase their visibility
+                  and reach more customers.</p>
               </div>
             </div> <!-- End Icon Box -->
 
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="300">
               <div class="icon-box">
                 <i class="bi bi-clipboard-pulse"></i>
-                <h3>Rerum aperiam</h3>
-                <p>Autem saepe animi et aut aspernatur culpa facere. Rerum saepe rerum voluptates quia</p>
+                <h3> Our Vision</h3>
+                <p><strong>Empowering Businesses Everywhere</strong>
+                  We envision a world where every business, big or small, can connect with their target audience and
+                  grow without limits.</p>
               </div>
             </div> <!-- End Icon Box -->
 
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="400">
               <div class="icon-box">
                 <i class="bi bi-command"></i>
-                <h3>Veniam omnis</h3>
-                <p>Omnis perferendis molestias culpa sed. Recusandae quas possimus. Quod consequatur corrupti</p>
+                <h3> Our Services</h3>
+                <p><strong>What We Offer</strong>
+                  From business listings to premium advertising options, we offer a range of services to help your
+                  business thrive.</p>
               </div>
             </div> <!-- End Icon Box -->
 
             <div class="col-md-6" data-aos="fade-up" data-aos-delay="500">
               <div class="icon-box">
                 <i class="bi bi-graph-up-arrow"></i>
-                <h3>Delares sapiente</h3>
-                <p>Sint et dolor voluptas minus possimus nostrum. Reiciendis commodi eligendi omnis quideme lorenda
+                <h3> User-Friendly Platform</h3>
+                <p><strong>Easy to Navigate, Easy to Use</strong>
+                  Our platform is designed with simplicity in mind, making it easy for both businesses and customers to
+                  navigate and use effectively.
                 </p>
               </div>
             </div> <!-- End Icon Box -->
@@ -298,38 +312,29 @@
 
       <div class="row gy-4">
 
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div class="stats-item text-center w-100 h-100">
-            <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+            <span data-purecounter-start="0" data-purecounter-end="230" data-purecounter-duration="1"
               class="purecounter"></span>
             <p>Clients</p>
           </div>
         </div><!-- End Stats Item -->
 
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div class="stats-item text-center w-100 h-100">
-            <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+            <span data-purecounter-start="0" data-purecounter-end="300" data-purecounter-duration="1"
               class="purecounter"></span>
-            <p>Projects</p>
+            <p>Businesses </p>
           </div>
         </div><!-- End Stats Item -->
 
-        <div class="col-lg-3 col-md-6">
+        <div class="col-lg-4 col-md-6">
           <div class="stats-item text-center w-100 h-100">
-            <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+            <span data-purecounter-start="0" data-purecounter-end="101" data-purecounter-duration="1"
               class="purecounter"></span>
-            <p>Hours Of Support</p>
+            <p>Subscribers</p>
           </div>
         </div><!-- End Stats Item -->
-
-        <div class="col-lg-3 col-md-6">
-          <div class="stats-item text-center w-100 h-100">
-            <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
-              class="purecounter"></span>
-            <p>Workers</p>
-          </div>
-        </div><!-- End Stats Item -->
-
       </div>
 
     </div>
@@ -340,12 +345,23 @@
 
     <div class="container footer-top">
       <div class="row gy-4">
-        <div class="col-lg-5 col-md-12 footer-about">
+        <div class="col-lg-4 col-md-12 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
             <span class="sitename">Zino</span>
           </a>
-          <p>Cras fermentum odio eu feugiat lide par naso tierra. Justo eget nada terra videa magna derita valies darta
-            donna mare fermentum iaculis eu non diam phasellus.</p>
+          <p>Discover how our directory has helped businesses like yours grow and succeed. Read their stories and get
+            inspired.</p>
+
+        </div>
+
+        <div class="col-lg-4 col-6 footer-links">
+          <h4>Follow Us</h4>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
           <div class="social-links d-flex mt-4">
             <a href=""><i class="bi bi-twitter-x"></i></a>
             <a href=""><i class="bi bi-facebook"></i></a>
@@ -354,35 +370,13 @@
           </div>
         </div>
 
-        <div class="col-lg-2 col-6 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-            <li><a href="#">Services</a></li>
-            <li><a href="#">Terms of service</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
-        </div>
-
-        <div class="col-lg-2 col-6 footer-links">
+        <div class="col-lg-4 col-6 footer-links">
           <h4>Our Services</h4>
           <ul>
             <li><a href="#">Web Design</a></li>
             <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
             <li><a href="#">Graphic Design</a></li>
           </ul>
-        </div>
-
-        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
-          <h4>Contact Us</h4>
-          <p>A108 Adam Street</p>
-          <p>New York, NY 535022</p>
-          <p>United States</p>
-          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-          <p><strong>Email:</strong> <span>info@example.com</span></p>
         </div>
 
       </div>

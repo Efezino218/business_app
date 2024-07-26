@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Business Search Results</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 50%;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .search-form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .search-form input[type="text"] {
+            padding: 20px;
+            width: 60%;
+            border: 1px solid #0d6efd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .search-form button {
+            padding: 20px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #0b5ed7;
+        }
+
+        .business-info {
+            background-color: #f1f1f1;
+            border: 1px solid #e3e3e3;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .business-info p {
+            margin: 10px 0;
+            color: #333;
+        }
+
+        .business-info a {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #E84545;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .business-info a:hover {
+            background-color: #c73333;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0d6efd;
+            margin-bottom: 6px;
+        }
+
+        h3 {
+            text-align: center;
+            margin-top: 0;
+            color: #E84545;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form method="POST" action="{{ url_for('search_business') }}" class="search-form">
+            <input type="text" name="search_term" placeholder="Enter shop number or business name" required>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
+        <h1>Businesses Found</h1>
+        <h3>Search Results for &nbsp; <span>"{{ search_term }}"</span> </h3>
+
+
+        {% for businesses in business %}
+        <div class="business-info">
+            <p><strong>Shop Number:</strong> {{ businesses[1] }}</p>
+            <p><strong>Business Name:</strong> {{ businesses[2] }}</p>
+            <p><strong>Description:</strong> {{ businesses[3] }}</p>
+            <a href="{{ url_for('view_business', business_id=businesses[0]) }}" class="btn btn-secondary">View</a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Go Back To Home</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

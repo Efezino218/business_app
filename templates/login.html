@@ -32,7 +32,10 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Login </button>
-            <p>don't have an account? <a href="{{ url_for('register') }}">register</a></p>
+            <p>don't have an account? <a href="{{ url_for('register') }}">register</a> or <a
+                    href="{{ url_for('forgot_password') }}">forgotton
+                    password</a>
+            </p>
         </form>
     </div>
 </body>

@@ -652,7 +652,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  /* padding: 60px 0; */
   scroll-margin-top: 98px;
   overflow: clip;
 }
@@ -709,15 +709,14 @@ section,
   --background-color: #000000;
   --heading-color: #ffffff;
   width: 100%;
-  min-height: 100vh;
+  min-height: -100vh;
   position: relative;
-  padding: 160px 0 80px 0;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.hero img {
+.hero .bg {
   position: absolute;
   inset: 0;
   display: block;
@@ -740,9 +739,12 @@ section,
   z-index: 3;
 }
 
+.hero .row {
+  margin-top: 50px;
+}
+
 .hero h2 {
   color: var(--contrast-color);
-  margin: 0;
   font-size: 44px;
   font-weight: 700;
 }

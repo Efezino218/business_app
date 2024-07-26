@@ -1,0 +1,24 @@
+<form action="{{ url_for('admin_update_business', business_id=business[0]) }}" method="post">
+    <div class="form-group">
+        <label for="shop_no">Shop No</label>
+        <input type="text" class="form-control" id="shop_no" name="shop_no" value="{{ business[1] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="bus_name">Business Name</label>
+        <input type="text" class="form-control" id="bus_name" name="bus_name" value="{{ business[2] }}" required>
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" name="description" required>{{ business[3] }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="user_id">Owner ID</label>
+        <input type="number" class="form-control" id="user_id" name="user_id" value="{{ business[4] }}" required>
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="subscription_active" name="subscription_active" {{ 'checked'
+            if business[5] else '' }}>
+        <label class="form-check-label" for="subscription_active">Subscription Active</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Update Business</button>
+</form>

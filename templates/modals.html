@@ -1,0 +1,79 @@
+<!-- templates/modals.html -->
+<!-- Update User Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('admin_update_user') }}" method="post">
+                    <input type="hidden" name="user_id">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" class="form-control" name="first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" required>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" name="is_admin" id="is_admin">
+                        <label class="form-check-label" for="is_admin">Admin</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Business Modal -->
+<div class="modal fade" id="updateBusinessModal" tabindex="-1" role="dialog" aria-labelledby="updateBusinessModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateBusinessModalLabel">Update Business</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('admin_update_business') }}" method="post">
+                    <input type="hidden" name="business_id">
+                    <div class="form-group">
+                        <label for="shop_no">Shop No</label>
+                        <input type="text" class="form-control" name="shop_no" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bus_name">Business Name</label>
+                        <input type="text" class="form-control" name="bus_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" name="description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_id">User ID</label>
+                        <input type="text" class="form-control" name="user_id" required>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" name="subscription_active"
+                            id="subscription_active">
+                        <label class="form-check-label" for="subscription_active">Subscription Active</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

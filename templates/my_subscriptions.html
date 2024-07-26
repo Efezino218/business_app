@@ -5,37 +5,81 @@
 <head>
     <meta charset="UTF-8">
     <title>My Subscriptions</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .table {
+            background-color: #fff;
+        }
+
+        .table thead {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table td,
+        .table th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #6c757d;
+        }
+    </style>
 </head>
+
 
 <body>
     <div class="container">
         <h1>My Subscriptions</h1>
         {% if subscriptions %}
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Business Name</th>
-                    <th>Subscription Type</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Status</th>
-                    <th>Amount Paid</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for subscription in subscriptions %}
-                <tr>
-                    <td>{{ subscription[1] }}</td>
-                    <td>{{ subscription[2] }}</td>
-                    <td>{{ subscription[3].strftime('%Y-%m-%d') }}</td>
-                    <td>{{ subscription[4].strftime('%Y-%m-%d') }}</td>
-                    <td>{{ subscription[5] }}</td>
-                    <td>${{ subscription[6] }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Subscription Type</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Amount Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for subscription in subscriptions %}
+                    <tr>
+                        <td>{{ subscription[1] }}</td>
+                        <td>{{ subscription[2] }}</td>
+                        <td>{{ subscription[3].strftime('%Y-%m-%d') }}</td>
+                        <td>{{ subscription[4].strftime('%Y-%m-%d') }}</td>
+                        <td>{{ subscription[5] }}</td>
+                        <td>${{ subscription[6] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
         {% else %}
         <p>You have no active subscriptions.</p>
         {% endif %}
