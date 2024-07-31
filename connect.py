@@ -154,6 +154,64 @@ CREATE TABLE payments (
 """
 
 
+
+
+"""  _____MORE EXPLAINATION CONNECTION TO DATABASE____
+
+====Defining the get_db_connection function===
+    def get_db_connection():
+    This function is designed to establish a connection to your PostgreSQL database.
+
+
+===Connecting to the Database===
+    conn = psycopg2.connect(
+        host='localhost', 
+        database='find_business_db', 
+        user='postgres', 
+        password='postgres'
+    )
+
+===Returning the Connection===
+    return conn
+    The function returns the connection object, which can be used to interact with the database.
+    
+===Error Handling===
+    except psycopg2.Error as e:
+        print(f"Database error: {e}")
+    except Exception as e:
+        print(f"Error: {e}")
+    return None
+    If there's an error during the connection process, it is caught and printed. The function returns 
+    
+    
+===Installing psycopg2-binary===
+    pip install psycopg2-binary
+        *Purpose and Functionality of psycopg2*
+        psycopg2 is a PostgreSQL adapter for Python. It allows Python applications to
+        communicate with PostgreSQL databases. The main functionalities include:
+
+        *Connecting to a PostgreSQL database.
+        *Executing SQL commands and queries.
+        *Fetching data from the database.
+        *Managing database transactions.
+        
+        
+===Cursor Object and cur.execute()===
+    A cursor is an object used to interact with the database. It allows you
+    to execute SQL commands and fetch results.
+
+        Here’s how you typically use a cursor Below:
+       " cur = conn.cursor()"
+        After establishing a connection, you create a cursor object using the cursor() 
+        method of the connection object.
+        
+        
+===Executing SQL Commands===
+       For Example: "cur.execute("SELECT * FROM your_table")"
+        The execute() method of the cursor object is used to execute SQL commands. 
+        For example, "SELECT * FROM your_table" retrieves all rows from your_table.
+"""
+
 # OR ANOTHER WAY OF CONNECTING TO DATABASE BELOW, BUT IS NOT MARJOLY REQUIRED
 # def get_db_connection():
 #     try:

@@ -15,7 +15,6 @@ from itsdangerous import URLSafeTimedSerializer
 app = Flask(__name__)
 
 # // Password Reset Configuration //#
-app.config['UPLOAD_FOLDER'] = "./static/uploads" #we specify the path the image will be uploaded 
 app.config['SECRET_KEY'] = "your_secret_key" #change the secrete key passoword when u are ablut to deploy the app, for stronger security
 # app.secret_key = 'your_secret_key'
 
@@ -50,8 +49,8 @@ def send_email():
 
 
 # UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = "./static/uploads" #we specify the path the image will be uploaded 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp4', 'mov', 'avi', 'wmv'}
-
 
 def allowed_file(filename):
     return '.' in filename and \
