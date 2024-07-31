@@ -13,6 +13,8 @@ from itsdangerous import URLSafeTimedSerializer
 
 
 app = Flask(__name__)
+
+# // Password Reset Configuration //#
 app.config['UPLOAD_FOLDER'] = "./static/uploads" #we specify the path the image will be uploaded 
 app.config['SECRET_KEY'] = "your_secret_key" #change the secrete key passoword when u are ablut to deploy the app, for stronger security
 # app.secret_key = 'your_secret_key'
@@ -27,10 +29,15 @@ app.config['MAIL_PASSWORD'] = 'zcqw ngru qbea qsqm' #this is the password that g
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
+"""STEP TO FOLLOW TO CREATE A NEW APP NAME:
+    GO To Your Google Account Setting, Search for App passwords, click on it, it might request U to put your google password,
+    then after that, it will take u to "App passwords" route, u will see a headline "Your app passwords" than u can create
+    a New App name, and it will pOpup a code example of the one we use above 'zcqw ngru qbea qsqm', 
+"""
 # Create an instance of Mail.
 mail = Mail(app)
 
-# Define the route and send mail.
+# Define the route and send mail, Just to test If The App can send email out.
 @app.route("/send_email")
 def send_email():
   msg = Message('Hello from the other side!', sender = 'efezinorich@gmail.com', recipients = ['cyjustwebsolution@gmail.com'])
@@ -38,6 +45,8 @@ def send_email():
   msg.html = "<h1>Message Sent</h1>"
   mail.send(msg)
   return msg.html
+
+# // Password Reset Configuration //#
 
 
 # UPLOAD_FOLDER = 'static/uploads'
